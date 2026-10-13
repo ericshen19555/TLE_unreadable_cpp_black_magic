@@ -1,0 +1,33 @@
+# LaTeX build files
+*.aux
+*.log
+*.out
+*.toc
+*.synctex.gz
+*.fls
+*.fdb_latexmk
+*.nav
+*.snm
+*.vrb
+
+# minted / Pygments generated files
+*.highlight.minted
+*.index.minted
+*.style.minted
+_minted*/
+.minted/
+
+# Generated documents (published through GitHub Releases)
+*.pdf
+
+# Python temporary/cache files
+__pycache__/
+*.py[cod]
+*.tmp
+temp.py
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

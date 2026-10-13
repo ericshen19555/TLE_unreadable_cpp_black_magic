@@ -1,0 +1,1688 @@
+\documentclass[10pt, a4paper, twocolumn]{article}
+
+% --- 基本設定 ---
+\usepackage{geometry}
+\geometry{a4paper, top=1.8cm, bottom=0.5cm, left=0.5cm, right=0.5cm}
+
+% --- 中文支援 ---
+\usepackage{xeCJK}
+\setCJKmainfont{Noto Serif CJK TC} % 可替換為其他字型，如 Microsoft JhengHei 或 PingFang TC
+
+% --- 數學與符號 ---
+\usepackage{amsmath}
+
+% 支援刪除線
+\usepackage[normalem]{ulem}
+
+% 段落縮排
+\usepackage{indentfirst}
+\setlength{\parindent}{2em} 
+% 行距調整
+\usepackage{setspace}
+\usepackage{enumitem}
+
+% --- 預設內文樣式 ---
+\setstretch{1.3}
+\setlength{\parskip}{0.6em}
+
+% --- 定義還原樣式（單行距 + 無段距） ---
+\newcommand{\normaltextspacing}{%
+	\setstretch{1.0}%
+	\setlength{\parskip}{0pt}%
+}
+\newcommand{\resumetextspacing}{%
+	\setstretch{1.3}%
+	\setlength{\parskip}{0.6em}%
+}
+
+% --- 進入這些區塊時暫時關閉文字樣式 ---
+\BeforeBeginEnvironment{itemize}{\normaltextspacing}
+\AfterEndEnvironment{itemize}{\resumetextspacing}
+
+\BeforeBeginEnvironment{enumerate}{\normaltextspacing}
+\AfterEndEnvironment{enumerate}{\resumetextspacing}
+
+\BeforeBeginEnvironment{minted}{\normaltextspacing}
+\AfterEndEnvironment{minted}{\resumetextspacing}
+
+% 表格行距
+\renewcommand{\arraystretch}{1.5}
+
+% 自訂 quote
+\usepackage[most]{tcolorbox}
+\usepackage{xcolor}
+
+\renewenvironment{quote}
+{\begin{tcolorbox}[
+		colback=white,
+		colframe=gray,
+		left=4mm,
+		right=0mm,
+		top=2mm,
+		bottom=2mm,
+		boxrule=-1pt,
+		enhanced,
+		borderline west={1.5pt}{0pt}{gray},
+		sharp corners,
+		before skip=8pt, after skip=8pt,
+		boxsep=2pt,
+		breakable, 
+		fontupper=\color{gray}
+		]}
+	{\end{tcolorbox}}
+
+% \usepackage[verbatim]{minted}  % 關掉 highlighting 快速編譯
+\usepackage{minted}
+\setminted{
+	fontsize=\small,
+	frame=lines,   % 加上外框
+	breaklines     % 自動換行
+}
+
+% --- 圖片與超連結 ---
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{float} % 用於 [H] 強制圖片位置
+
+% --- 標題與作者 ---
+\title{TLE 的毒瘤高科技}
+\author{暴力又被TLE}
+\date{\today}
+
+% --- 頁首頁尾設定 ---
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{} % 清除所有預設的頁首頁尾
+
+% 使用 \makeatletter 以便存取 \@title 和 \@author 內部變數
+\makeatletter
+\lhead{\@title}
+\chead{\thepage}
+\rhead{\@author}
+\makeatother
+
+\setlength{\headsep}{12pt} % 減少頁首與內文的間隔
+\renewcommand{\headrulewidth}{0.4pt} % 頁首底下的分隔線粗細
+\renewcommand{\footrulewidth}{0pt} % 移除頁尾分隔線 (若有)
+
+% --- 縮小 section ---
+\usepackage{titlesec}
+% 格式: \titleformat{命令}[型態]{格式}{標號}{標號與文字間距}{標題內容前綴}
+\titleformat{\section}
+{\normalfont\large\bfseries}   % 樣式 (這裡把 section 改小成 large)
+{\thesection}                  % 顯示章節號
+{1em}                          % 章節號和文字之間的距離
+{}                             % 標題內容的前綴 (這裡留空)
+
+% 格式: \titlespacing{命令}{左邊縮排}{與前段距離}{與後段距離}
+\titlespacing{\section}
+{0pt}      % 左縮排
+{6pt plus 2pt minus 2pt}    % 前段距離 (預設大約 12pt~20pt)
+{6pt plus 2pt minus 2pt}    % 後段距離 (預設大約 6pt~12pt)
+
+\usepackage{multicol}
+
+\renewcommand{\contentsname}{目錄}
+
+\begin{document}
+
+\begin{multicols}{2}
+  \begin{spacing}{0.2}
+    \tableofcontents
+  \end{spacing}
+\end{multicols}
+
+\newpage
+	
+\section{C++ IO template}
+
+\begin{minted}{cpp}
+#include <bits/stdc++.h>
+#define IO cin.tie(0)->sync_with_stdio(0);
+#define R(x) istringstream stm(x); cin.rdbuf(stm.rdbuf());
+#define M(x, v) memset(x, v, sizeof(x))
+#define REP(i, s, t) for (int i = (s); i < (t); ++i)
+#define in >> 
+#define ot << 
+#define se ot ' '
+#define sep se ot 
+#define nl ot '\n'
+#define all(x) x.begin(), x.end()
+using namespace std;
+template <typename T>
+using vec = vector<T>;
+using ll = long long;
+void solve();
+string T = R"()";
+
+int main() {
+  IO;
+  int t = 1;
+
+  R(T);
+  cin in t;
+
+  while (t--) solve();
+  return 0;
+}
+
+const int N = 1e5, mod = 1e9 + 7;
+const ll inf = 0x3f3f3f3f'3f3f3f3f;
+
+void solve() {
+  
+}
+\end{minted}
+
+\subsection*{compile}
+
+\begin{minted}{text}
+g++ -std=c++20 -Wall -pipe -g3 -O0 test.cpp -o test
+g++ -std=c++20 -Wall -pipe -O2 test.cpp -o test
+... && (echo [done] && test.exe & cd .) || echo [fail]
+...; if ($?) { echo "[done]"; ./test.exe; } else { echo "[fail]"; }
+if ...; then echo "[done]"; ./test; else echo "[fail]"; fi
+\end{minted}
+
+\section{fread}
+
+\begin{minted}{cpp}
+#define gc() (p1==p2&&(p2=(p1=buf)+fread(buf,1,1<<25,stdin),p1==p2) ? EOF : *p1++)
+char buf[1<<25],*p1,*p2;
+int gi(){char c=gc();int x=c!='-'?c^'0':0,flag=c=='-'; for(;'0'<=(c=gc())&&c<='9';x+=c^'0')x*=10; return flag?-x:x;}
+unsigned gu(){char c;unsigned x=0; for(;'0'<=(c=gc())&&c<='9';x+=c^'0')x*=10; return x;}
+\end{minted}
+
+\section{PyPy recursion}
+
+\begin{minted}{python}
+from sys import setrecursionlimit
+setrecursionlimit(10**7)
+import pypyjit
+pypyjit.set_param('max_unroll_recursion=-1')
+\end{minted}
+
+\section{對拍}
+
+\begin{minted}{python}
+import subprocess
+from itertools import count
+from difflib import ndiff
+
+def compile(name):
+  subprocess.run(["g++", "-O2", f"{name}.cpp", "-o", f"{name}.exe"])
+  print(f"{name} compiled")
+
+compile("test")
+
+gen = ["python", "gen.py"]
+ac = ["./test.exe"]
+bf = ["python", "bf.py"]
+
+for it in count():
+  tc = subprocess.check_output(gen, text=True)
+  x = [line.rstrip() for line in subprocess.check_output(ac, input=tc, text=True).splitlines()]
+  y = [line.rstrip() for line in subprocess.check_output(bf, input=tc, text=True).splitlines()]
+  if x != y:
+    print("-" * 30)
+    print(tc)
+    print("-" * 30)
+    print("\n".join(ndiff(x, y)))
+    break
+  if it % 100 == 0: print(f"pass {it = }")
+\end{minted}
+
+\section{稀疏表}
+
+\begin{minted}{cpp}
+template <typename T, auto f>
+struct ST {
+  static constexpr int M = __lg(N) + 1;
+  T st[M][N];
+
+  void build(T *l, int n) {
+    const int lim = n + 1;
+    int bl = __lg(n) + 1;
+
+    REP(i, 0, n) st[0][i] = l[i];
+    int b = 1;
+    REP(r, 1, bl) {
+      REP(i, 0, n - b) {
+        st[r][i] = f(st[r - 1][i], st[r - 1][i + b]);
+      }
+      b <<= 1;
+    }
+  }
+  T query(int s, int t) {
+    int r = __lg(t - s);
+    return f(st[r][s], st[r][t - (1 << r)]);
+  }
+};
+// need C++ 20
+ST<int, [](auto a, auto b) {return max(a, b);}> st;
+\end{minted}
+
+\section{懶標遞迴式線段樹}
+
+\begin{minted}{cpp}
+ll l[N];
+struct node {
+  ll val, tag;
+} tr[N << 2];
+
+node combine(node a, node b) {
+  // combine
+  return {a.val + b.val, 0};
+}
+
+void merge(int pos, int s, int t) {
+  int mid = (s + t) >> 1;
+  tr[pos] = combine(tr[pos << 1], tr[pos << 1 | 1]);
+}
+
+// init
+void build(int pos, int s, int t) {
+  // init tag
+  tr[pos].tag = 0;
+  if (s + 1 == t) {
+    // init leaf
+    tr[pos].val = l[s];
+    return;
+  }
+  int mid = (s + t) >> 1;
+  build(pos << 1 | 0, s, mid);
+  build(pos << 1 | 1, mid, t);
+  merge(pos, s, t);
+}
+
+void update(int pos, int s, int t, node o) {
+  int mid = (s + t) >> 1;
+  // update tree node
+  tr[pos].val += o.tag * (t - s);
+  // update tag
+  tr[pos].tag += o.tag;
+}
+
+void push(int pos, int s, int t) {
+  if (s + 1 == t) return;
+  int mid = (s + t) >> 1;
+  // push tag
+  update(pos << 1 | 0, s, mid, tr[pos]);
+  update(pos << 1 | 1, mid, t, tr[pos]);
+  // reset tag
+  tr[pos].tag = 0;
+}
+
+node query(int pos, int s, int t, int qs, int qt) {
+  if (qt <= s or  t <= qs) return {0, 0};  // empty
+  if (qs <= s and t <= qt) return tr[pos];
+  push(pos, s, t);
+  int mid = (s + t) >> 1;
+  auto le = query(pos << 1 | 0, s, mid, qs, qt);
+  auto ri = query(pos << 1 | 1, mid, t, qs, qt);
+  return combine(le, ri);
+}
+
+void modify(int pos, int s, int t, int qs, int qt, node o) {
+  if (qt <= s or  t <= qs) return;
+  if (qs <= s and t <= qt) {
+    // place tag
+    update(pos, s, t, o);
+    return;
+  }
+  push(pos, s, t);
+  int mid = (s + t) >> 1;
+  modify(pos << 1 | 0, s, mid, qs, qt, o);
+  modify(pos << 1 | 1, mid, t, qs, qt, o);
+  merge(pos, s, t);
+}
+\end{minted}
+
+\section{PBDS}
+
+\begin{itemize}[nosep, after=\vspace{-8pt}]
+    \item 若要 \texttt{multiset} 則用 \texttt{pair\{value, idx++\}}
+\end{itemize}
+
+\begin{minted}{cpp}
+#include <ext/pb_ds/assoc_container.hpp>
+#include <ext/pb_ds/tree_policy.hpp>
+using namespace __gnu_pbds;
+tree<pii, null_type, less<pii>, rb_tree_tag, tree_order_statistics_node_update> u;
+u.order_of_key(x)  // count < x
+u.find_by_order(k)  // kth 0-based
+\end{minted}
+
+\section{FHQ-Treap}
+
+\begin{itemize}[nosep, after=\vspace{-8pt}]
+    \item TLE/MLE：檢查 \texttt{node.siz}、\texttt{siz(o)}、\texttt{rng} 是否 \texttt{long long}
+    \item WA：\texttt{update} 前需要 \texttt{clone}
+    \item WA：如果 \texttt{merge} 前沒有 \texttt{split} 則需要 \texttt{clone}
+    \item WA：所有地方都加上 \texttt{push}
+\end{itemize}
+
+\begin{minted}{cpp}
+mt19937 rng(114514);
+// mt19937_64 rng(1145141919810);
+
+struct node {
+  int val, siz;
+  node *le, *ri;
+  node(int v): val(v), siz(1), le(0), ri(0) {}
+  void push() {}
+  void pull() {
+    siz = 1;
+    if (le) siz += le->siz;
+    if (ri) siz += ri->siz;
+  }
+  node *clone() {
+    // clone before update!!!
+    return this;
+    // return new node(*this);  // persistent
+  }
+};
+
+auto siz(node *x) {
+  return x ? x->siz : 0;
+}
+
+node *merge(node *a, node *b) {
+  if (not a or not b) return a ? a : b;
+  // if no split before merge, need clone
+  if (rng() % (siz(a) + siz(b)) < siz(a)) {
+    a->push(), a->ri = merge(a->ri, b), a->pull();
+    return a;
+  } else {
+    b->push(), b->le = merge(a, b->le), b->pull();
+    return b;
+  }
+}
+
+void split(node *o, node *&a, node *&b, int val) {
+  if (not o) {
+    a = b = 0; return;
+  }
+  o = o->clone();
+  o->push();
+  if (o->val < val) {
+    a = o, split(o->ri, a->ri, b, val);
+  } else {
+    b = o, split(o->le, a, b->le, val);
+  }
+  o->pull();
+}
+
+void split2(node *o, node *&a, node *&b, int k) {
+  if (not o) {
+    a = b = 0; return;
+  }
+  o = o->clone();
+  o->push();
+  if (siz(o->le) < k) {
+    a = o, split2(o->ri, a->ri, b, k - siz(o->le) - 1);
+  } else {
+    b = o, split2(o->le, a, b->le, k);
+  }
+  o->pull();
+}
+
+int rk(node *o, int val) {
+  if (not o) return 0;
+  if (o->val < val) {
+    return siz(o->le) + 1 + rk(o->ri, val);
+  } else {
+    return rk(o->le, val);
+  }
+}
+
+int kth(node *o, int k) {
+  if (siz(o->le) < k) return kth(o->ri, k - siz(o->le) - 1);
+  if (siz(o->le) == k) return o->val;
+  return kth(o->le, k);
+}
+
+void insert(node *&o, int val) {
+  node *a, *b;
+  split(o, a, b, val);
+  o = merge(a, merge(new node(val), b));
+}
+
+void remove(node *&o, int val) {
+  node *a, *b, *c;
+  split(o, a, b, val), split2(b, b, c, 1);
+  if (b and b->val == val) delete b, b = 0;
+  o = merge(a, merge(b, c));
+}
+
+node *meld(node *a, node *b) {
+  if (not a or not b) return a ? a : b;
+  if (rng() % (siz(a) + siz(b)) >= siz(a)) swap(a, b);
+  a->push();
+  node *c; split(b, b, c, a->val);
+  a->le = meld(a->le, b);
+  a->ri = meld(a->ri, c);
+  a->pull();
+  return a;
+}
+\end{minted}
+
+\section{珂朵莉 ODT}
+
+\begin{itemize}[nosep, after=\vspace{-8pt}]
+    \item 輸入空區間（$s \ge t$）會 UB，需要先判掉。
+\end{itemize}
+
+\begin{minted}{cpp}
+struct ODT {
+    map<ll, int> mp;
+    ODT(ll lim) {  // i in [0, lim)
+        mp[0] = -1, mp[lim] = -1;
+    }
+    auto find(ll i) {
+        return prev(mp.upper_bound(i));
+    }
+    auto &query(ll i) {
+        return find(i)->second;
+    }
+    ll siz(auto it) {
+        return next(it)->first - it->first;
+    }
+    auto split(ll i) {
+        return mp.emplace(i, query(i)).first;
+    }
+    auto make(ll s, ll t) {
+        auto tt = split(t);
+        auto ss = split(s);
+        return make_pair(ss, tt);
+    }
+    void update(ll s, ll t, auto v) {
+        auto [ss, tt] = make(s, t);
+        mp.erase(ss, tt);
+        mp[s] = v;
+    }
+    void perform(ll s, ll t) {
+        auto [ss, tt] = make(s, t);
+        for (auto it = ss; it != tt; ++it) {
+            // ...
+        }
+    }
+};
+\end{minted}
+
+\section{配對堆}
+
+\begin{minted}{cpp}
+struct node {
+  ll val; node *ch, *si;
+  node(ll v): val(v), ch(0), si(0) {}
+};
+
+node *meld(node *a, node *b) {
+  if (not a or not b) return a ? a : b;
+  if (a == b) return a;
+  if (a->val > b->val) swap(a, b);
+  b->si = a->ch;
+  a->ch = b;
+  return a;
+}
+
+node *merges(node *a) {
+  if (not a or not a->si) return a;
+  node *b = a->si, *c = b->si;
+  a->si = b->si = 0;
+  return meld(merges(c), meld(a, b));
+}
+
+ll top(node *o) {
+  return o ? o->val : -1;
+}
+
+void pop(node *&o) {
+  if (not o) return;
+  node *t = o;
+  o = merges(o->ch);
+  delete t;
+}
+\end{minted}
+
+\section{隨機堆}
+
+\begin{minted}{cpp}
+struct node {
+  ll val; node *le, *ri;
+  node(ll v): val(v), le(0), ri(0) {}
+  node *clone() {
+    return this;
+    // return new node(*this)  // persistent
+  }
+};
+
+node *merge(node *a, node *b) {
+  if (not a or not b) return a ? a : b;
+  if (a == b) return a;
+  if (a->val > b->val) swap(a, b);
+  a = a->clone();
+  a->ri = merge(a->ri, b);
+  if (rand() & 1) swap(a->le, a->ri);
+  return a;
+}
+
+ll top(node *o) {
+  return o ? o->val : -1;
+}
+
+void pop(node *&o) {
+  if (not o) return;
+  node *t = o;
+  o = merge(o->le, o->ri);
+  delete t;
+}
+
+node *pop(node *o) {  // persistent
+  if (not o) return 0;
+  node *t = merge(o->le, o->ri);
+  delete o;
+  return t;
+}
+\end{minted}
+
+\section{李超樹}
+
+\begin{itemize}[nosep, after=\vspace{-8pt}]
+    \item \texttt{tr[N << 2]} 記得開 $4$ 而非 $2$ 倍
+    \item \texttt{update} 往下傳 \texttt{v}，而非 \texttt{u}
+\end{itemize}
+
+\begin{minted}{cpp}
+struct line {
+  ll m = 0, k = 0;
+  ll y(ll x) {
+    return x * m + k;
+  }
+} tr[N << 2];
+
+void update(int o, int s, int t, line v) {
+  auto &u = tr[o];
+  int mid = s + t >> 1;
+  if (v.y(mid) > u.y(mid)) swap(u, v);
+  if (v.y(s+0) > u.y(s+0)) update(o << 1 | 0, s, mid, v);
+  if (v.y(t-1) > u.y(t-1)) update(o << 1 | 1, mid, t, v);
+}
+
+void modify(int o, int s, int t, int qs, int qt, line v) {
+  if (qt <= s or  t <= qs) return;
+  if (qs <= s and t <= qt) {
+    update(o, s, t, v);
+    return;
+  }
+  int mid = s + t >> 1;
+  modify(o << 1 | 0, s, mid, qs, qt, v);
+  modify(o << 1 | 1, mid, t, qs, qt, v);
+}
+
+ll query(int o, int s, int t, int x) {
+  ll res = tr[o].y(x);
+  if (s + 1 == t) return res;
+  int mid = s + t >> 1;
+  if (x < mid) res = max(res, query(o << 1 | 0, s, mid, x));
+  else         res = max(res, query(o << 1 | 1, mid, t, x));
+  return res;
+}
+\end{minted}
+
+\section{多重背包 單調隊列}
+
+\begin{minted}{cpp}
+const int N = 100, M = 4e4;
+int d[M + 1], p[M + 1], q[M];
+
+void solve() {
+  int n, m; cin in n in m;
+  REP(_, 0, n) {
+    int v, w, c; cin in v in w in c;  // 價值 重量 數量
+    memcpy(d, p, sizeof(p));
+    REP(r, 0, w) {
+      for (int i = r, h = 0, t = 0; i <= m; i += w) {
+        if (h < t and q[h] < i - w * c) ++h;
+        if (h < t) p[i] = max(p[i], d[q[h]] + (i - q[h]) / w * v);
+        for (; h < t and d[i] >= d[q[t-1]] + (i - q[t-1]) / w * v; --t);
+        q[t++] = i;
+      }
+    }
+  }
+  cout ot p[m] nl;  // max sum(v) that sum(w) <= m
+}
+\end{minted}
+
+\section{Johnson}
+
+\begin{minted}{cpp}
+const int N = 3e3, M = 6e3, inf = 0x3f3f3f3f;
+
+int hd[N], to[M], nxt[M], ew[M];
+int u[N], dis[N];
+struct {
+  int i, v;
+} q[N];
+
+void solve() {
+  M(hd, -1), M(u, 0);
+  int n, m; cin in n in m;
+  REP(i, 0, m) {
+    int a, b; cin in a in b in ew[i]; --a, --b;
+    to[i] = b, nxt[i] = hd[a], hd[a] = i;
+  }
+  REP(r, 0, n) {  // Bellman-Ford
+    REP(i, 0, n) {
+      for (int ei = hd[i]; ~ei; ei = nxt[ei]) {
+        int j = to[ei], nv = u[i] + ew[ei];
+        if (nv >= u[j]) continue;
+        if (r == n-1) {
+          cout ot -1 nl;
+          return;
+        }
+        u[j] = nv;
+      }
+    }
+  }
+  auto cmp = [&](auto &a, auto & b) {
+    return a.v > b.v;
+  };
+  REP(s, 0, n) {
+    REP(i, 0, n) dis[i] = inf;
+    dis[s] = 0;
+    q[0] = {s, 0};
+    for (int h = 1; h; ) {  // Dijkstra
+      pop_heap(q, q + h, cmp);
+      auto [i, v] = q[--h];
+      if (v > dis[i]) continue;
+      for (int ei = hd[i]; ~ei; ei = nxt[ei]) {
+        int j = to[ei], nv = v + ew[ei] + u[i] - u[j];
+        if (nv >= dis[j]) continue;
+        dis[j] = nv, q[h++] = {j, nv};
+        push_heap(q, q + h, cmp);
+      }
+    }
+    REP(i, 0, n) (dis[i] < inf ? dis[i] - u[s] + u[i] : -1)
+  }
+}
+\end{minted}
+
+\section{MP}
+
+\begin{minted}{cpp}
+// s.find(p)
+// char p[N], s[N]; int lps[N];
+for (int i = 1, j = 0; i < m; ++i) {
+  for (; j and p[j] != p[i]; j = lps[j - 1]);
+  j += (p[j] == p[i]);
+  lps[i] = j;
+}
+for (int i = 0, j = 0; i < n; ++i) {
+  for (; j and p[j] != s[i]; j = lps[j - 1]);
+  j += (p[j] == s[i]);
+  if (j >= m) {
+    ans[a++] = i - (j - 1);
+    j = lps[j - 1];
+  }
+}
+\end{minted}
+
+\section{Z function}
+
+\begin{minted}{cpp}
+// char s[N]; int z[N];
+fill(z, z + n, 0);
+for (int i = 1, l = 0, r = 0; i < n; ++i) {
+  if (i < r) z[i] = min(r - i, z[i - l]);
+  for (; i + z[i] < n and s[z[i]] == s[i + z[i]]; ++z[i]);
+  if (i + z[i] > r) l = i, r = i + z[i];
+}
+\end{minted}
+
+\section{Minimal Rotation}
+
+\begin{minted}{python}
+def min_rotation(s: str) -> str:
+  n = len(s)
+  s += s
+  i, j = 0, 1
+  while i < n and j < n:
+    k = 0
+    while k < n and s[i + k] == s[j + k]: k += 1
+    if s[i + k] < s[j + k]: j += k + 1
+    else: i += k + 1
+    if i == j: j += 1
+  i = min(i, j)
+  return s[i:i+n]
+\end{minted}
+
+\section{馬拉車}
+
+\begin{minted}{cpp}
+// char s[N << 1 | 1]; int z[N << 1 | 1];
+void pal(char s[], int z[]) {
+  int n = strlen(s) << 1 | 1;
+  for (int i = n; i--; s[i] = i & 1 ? s[i >> 1] : '#');
+  for (int i = 1, l = 0, r = 0; i < n; ++i) {
+    if (i < r) z[i] = min(z[2 * l - i], r - i);
+    while (i + 1 + z[i] < n and i - 1 - z[i] >= 0 and 
+      s[ i + 1 + z[i] ] == s[ i - 1 - z[i]]) ++z[i];
+    if (i + z[i] > r) l = i, r = i + z[i];
+  }
+}
+\end{minted}
+
+\section{SCC}
+
+\begin{minted}{cpp}
+// int dfn[N], low[N], scc[N], stk[N], dfc, si;
+// vec<int> G[N];
+// bool instk[N];
+// M(dfn, 0);
+void tarjan(int i) {
+  dfn[i] = low[i] = ++dfc;
+  stk[si++] = i, instk[i] = 1;
+  for (int j: G[i]) {
+    if (not instk[j] and dfn[j]) continue;
+    if (not dfn[j]) tarjan(j);
+    if (low[j] < low[i]) low[i] = low[j];
+  }
+  if (low[i] == dfn[i]) {
+    for (int j = -1; j != i; ) {
+      j = stk[--si], instk[j] = 0;
+      scc[j] = i;
+    }
+  }
+}
+\end{minted}
+
+\section{割點}
+
+\begin{minted}{cpp}
+// int dfn[N], low[N], dfc;
+// vec<int> G[N];
+// bool ans[N];
+// M(dfn, 0);
+void tarjan(int i, int pa) {
+  low[i] = dfn[i] = ++dfc;
+  int ch = 0;
+  for (int j: G[i]) {
+    if (not dfn[j]) {
+      ++ch;
+      tarjan(j, i);
+      if (low[j] < low[i]) low[i] = low[j];
+      if (i != pa and low[j] >= dfn[i]) ans[i] = 1;
+    } else if (j != pa and dfn[j] < low[i]) {
+      low[i] = dfn[j];
+    }
+  }
+  if (i == pa and ch >= 2) ans[i] = 1;
+}
+\end{minted}
+
+\section{割邊}
+
+\begin{minted}{cpp}
+// int dfn[N], low[N], dfc;
+// vec<int> G[N];
+// bool ans[M];
+// M(dfn, 0);
+void tarjan(int i, int pa) {
+  low[i] = dfn[i] = ++dfc;
+  for (int j: G[i]) {
+    if (not dfn[j]) {
+      tarjan(j, i);
+      if (low[j] < low[i]) low[i] = low[j];
+      if (low[j] > dfn[i]) ans[ei >> 1] = 1;
+    } else if (j != pa and dfn[j] < low[i]) {
+      low[i] = dfn[j];
+    }
+  }
+}
+\end{minted}
+
+\section{點雙}
+
+\begin{minted}{cpp}
+// int dfn[N], low[N], stk[N], dfc;
+// vec<int> G[N];
+// bool instk[N], ans[N];
+// M(dfn, 0);
+void tarjan(int i, int pa) {
+  dfn[i] = low[i] = ++dfc;
+  for (int j: G[i]) {
+    int j = to[ei];
+    if (not dfn[j]) {
+      stk[si++] = ei;
+      tarjan(j, i);
+      if (low[j] < low[i]) low[i] = low[j];
+      if (low[j] >= dfn[i]) {
+        for (int ej = -1; ej != ei; ++x) {
+          ej = stk[--si];
+          bcc[ej >> 1] = ei >> 1;
+        }
+      }
+    } else if (j != pa and dfn[j] < dfn[i]) {
+      if (dfn[j] < low[i]) low[i] = dfn[j];
+      stk[si++] = ei;
+    }
+  }
+}
+\end{minted}
+
+\section{邊雙}
+
+\begin{minted}{cpp}
+// int dfn[N], low[N], scc[N], stk[N], dfc, si;
+// vec<int> G[N];
+// bool instk[N];
+// M(dfn, 0);
+void tarjan(int i, int inin) {
+  dfn[i] = low[i] = ++dfc;
+  stk[si++] = i, instk[i] = 1;
+  for (int j: G[i]) {
+    if ((ei ^ inin) == 1) continue;
+    int j = to[ei];
+    if (not dfn[j]) {
+      tarjan(j, ei);
+      if (low[j] < low[i]) low[i] = low[j];
+    } else if (instk[j] and dfn[j] < low[i]) {
+      low[i] = dfn[j];
+    }
+  }
+  if (low[i] == dfn[i]) {
+    for (int j = -1; j != i; ) {
+      j = stk[--si];
+      instk[j] = 0;
+      bcc[j] = i;
+    }
+  }
+}
+\end{minted}
+
+\section{歐拉路徑}
+
+\begin{minted}{python}
+for i, it in G:
+  G[i] = iter(it)
+def rec(i: int) -> None:
+  for j in G[i]:
+    rec(i)
+  path = [i] + path
+rec(s)
+\end{minted}
+
+\section{tarjan offline DSU}
+
+\begin{minted}{python}
+def dfs(i: int, pa: int) -> None:
+  top[i] = i
+  vis[i] = True
+  for qi, j in que[i]:
+    if not vis[j]: continue
+    ans[qi] = top[find(j)]
+  for j in G[i]:
+    if j == pa: continue
+    dfs(j, i)
+  if i is not root:
+    ri, rp = find(i), find(pa)
+    top[ri] = top[rp]
+    merge(ri, rp)
+\end{minted}
+
+\section{HLD}
+
+\begin{itemize}[nosep, after=\vspace{-8pt}]
+    \item TLE：\texttt{siz[i] += siz[j]}
+\end{itemize}
+
+\begin{minted}{cpp}
+// int dfn[N], pa[N], ch[N], top[N], dep[N], siz[N], dfc;
+// vec<int> G[N];
+void dfs(int i, int p) {
+  pa[i] = p, siz[i] = 1, ch[i] = -1;
+  for (int j: G[i]) if (j != p) {
+    dep[j] = dep[i] + 1;
+    dfs(j, i);
+    siz[i] += siz[j];
+    if (ch[i] == -1 or siz[j] > siz[ch[i]]) ch[i] = j;
+  }
+}
+void hld(int i, int t) {
+  top[i] = t, dfn[i] = dfc++;
+  if (~ch[i]) {
+    hld(ch[i], t);
+    for (int j: G[i]) if (j != pa[i] and j != ch[i]) {
+      hld(j, j);
+    }
+  }
+}
+int lca(int a, int b) {
+  while (top[a] != top[b]) {
+    if (dep[top[a]] < dep[top[b]]) swap(a, b);
+    // [top[a], a]
+    a = pa[top[a]];
+  }
+  if (dep[a] < dep[b]) swap(a, b);
+  // [b, a]
+  return b;
+}
+\end{minted}
+
+\section{虛樹}
+
+\begin{minted}{python}
+# 關鍵點 -> 虛樹
+def build(kp: list[int]) -> defaultdict[list[int]]:
+  vt = defaultdict(list)
+  kp.sort(key=get_dfn)  # 關鍵點照 dfn 排序
+  # 加入 樹根、關鍵點、相鄰關鍵點的 lca
+  aux = [root, kp[0]]
+  for i in range(1, len(kp)):
+    aux.append(kp[i])
+    aux.append(lca(kp[i - 1], kp[i]))
+  # 虛樹點照 dfn 排序、去重
+  aux = sorted(set(aux), key=get_dfn)
+  # 對於相鄰 a, b，link(lca(a, b), b)
+  for i in range(1, len(aux)):
+    x = lca(aux[i - 1], aux[i])
+    vt[x].append(aux[i])
+  return vt
+\end{minted}
+
+\section{Boruvka}
+
+\begin{itemize}[nosep, after=\vspace{-8pt}]
+    \item 每一輪，每個\textbf{連通塊}（而非單點） 向其他連通塊\textbf{僅}嘗試\textbf{最小的一條邊}，小心不要一次更新兩邊以上。
+    \item 連通塊的判斷方式，是在所有 merge 開始之前，所以要另外開一個 array 紀錄 merge 前的所屬 group，而不能使用 dsu find 動態判斷。
+    \item 因為是\textbf{相異}連通塊，所以大概率跟維護\textbf{最小、次小}有關，寫法上要注意第一點的「不要一次更新了這兩邊」。
+\end{itemize}
+
+\section{Convex Hull}
+
+\begin{minted}{cpp}
+struct p {
+  int x, y;
+  bool operator<(const p &o) const {
+    return tie(x, y) < tie(o.x, o.y);
+  }
+  bool operator==(const p &o) const {
+    return tie(x, y) == tie(o.x, o.y);
+  }
+} l[N];
+int h[N << 1];
+
+ll crs(const int o, const int a, const int b) {
+  return (ll)(l[a].x - l[o].x) * (l[b].y - l[o].y)
+       - (ll)(l[a].y - l[o].y) * (l[b].x - l[o].x);
+}
+
+void solve() {
+  int n; cin in n;
+  REP(i, 0, n) cin in l[i].x in l[i].y;
+  sort(l, l + n), n = unique(l, l + n) - l;
+  int dn = 0;
+  REP(i, 0, n) {
+    for (; dn >= 2 and crs(h[dn-2], h[dn-1], i) <= 0; --dn);
+    h[dn++] = i;
+  }
+  int up = dn;
+  for (int i = n-1; i--; ) {
+    for (; up > dn and crs(h[up-2], h[up-1], i) <= 0; --up);
+    h[up++] = i;
+  }
+  if (up != dn) --up;
+}
+\end{minted}
+
+\section{Kuhn 二分圖最大匹配}
+
+\begin{minted}{cpp}
+const int N = 500;
+
+vec<int> G[N];
+int pr[N]; bool vis[N];
+
+bool dfs(int i) {
+  for (int j: G[i]) {
+    int j = to[ei];
+    if (vis[j]) continue;
+    vis[j] = 1;
+    if (pr[j] == -1 or dfs(pr[j])) {
+      pr[j] = i;
+      return 1;
+    }
+  }
+  return 0;
+}
+
+int kuhn(int n) {
+  M(pr, -1);
+  int ans = 0;
+  REP(i, 0, n) M(vis, 0), ans += dfs(i);
+  return ans;
+}
+\end{minted}
+
+\section{Dinic $O(n ^ 2 m)$}
+
+\begin{minted}{cpp}
+const ll inf = 0x3f3f3f3f'3f3f3f3f;
+
+struct Dinic {
+  struct ee { int to; ll flow, cap; };
+  int n, s, t;
+  vec<ee> es;
+  vec<vec<int>> G;
+  vec<int> dep, it;
+  Dinic(int nn) : n(nn), G(n) {}
+  bool bfs() {
+    dep.assign(n, 0);
+    queue<int> q;
+    q.emplace(s), dep[s] = 1;
+    while (q.size()) {
+      int i = q.front(); q.pop();
+      for (int ei: G[i]) {
+        auto &[j, flow, cap] = es[ei];
+        if (dep[j] or flow == cap) continue;
+        dep[j] = dep[i] + 1;
+        q.emplace(j);
+      }
+    }
+    return dep[t];
+  }
+  ll dfs(int i, ll lim) {
+    if (i == t or not lim) return lim;
+    ll res = 0;
+    for (int &idx = it[i]; idx < G[i].size(); ++idx) {
+      int ei = G[i][idx];
+      auto &[j, flow, cap] = es[ei];
+      if (dep[j] != dep[i] + 1) continue;
+      ll x = dfs(j, min(lim - res, cap - flow));
+      res += x;
+      es[ei ^ 0].flow += x;
+      es[ei ^ 1].flow -= x;
+      if (res == lim) break;
+    }
+    if (res < lim) dep[i] = 0;
+    return res;
+  }
+  void add(int a, int b, ll w) {
+    G[a].emplace_back(es.size()), es.emplace_back(b, 0, w);
+    G[b].emplace_back(es.size()), es.emplace_back(a, 0, 0);
+  }
+  ll maxflow(int ss, int tt) {
+    s = ss, t = tt;
+    ll ans = 0, cur;
+    while (bfs()) {
+      it.assign(n, 0);
+      cur = dfs(s, inf);
+      ans += cur;
+    }
+    return ans;
+  }
+};
+\end{minted}
+
+\section{上下界流}
+\begin{minted}{python}
+es = [hi - lo for lo, hi in es]  # lo <= flow <= hi
+for i, j in es: bal[i] -= lo, bal[j] += lo
+if has s-t: aes.add(t, s, inf)  # → .flow = s→t 可行流
+for i, b in enum(bal):
+  if b > 0: aes.add(ss, i, v), demand += v
+  elif v < 0: aes.add(i, tt, -v)
+if (可行流 := maxflow(ss, tt, es + aes)) < demand: NO SOL
+MAX = 可行流 + maxflow(s, t, es, flow)
+MIN = 可行流 - maxflow(t, s, es, flow)
+\end{minted}
+
+\section{MCMF}
+
+\begin{minted}{cpp}
+const ll inf = 0x3f3f3f3f'3f3f3f3f;
+
+struct MCMF {
+  struct ee { int to; ll flow, cap, cost; };
+  int n, s, t; ll mc, mf;
+  vec<ee> es;
+  vec<vec<int>> G;
+  vec<ll> h, dis;
+  vec<int> it;
+  vec<bool> inq;
+  MCMF(int nn) : n(nn), G(n), inq(n) {}
+  void spfa() {
+    queue<int> q;
+    q.emplace(s), inq[s] = 1;
+    while (q.size()) {
+      int i = q.front(); q.pop(), inq[i] = 0;
+      for (int ei: G[i]) {
+        auto &[j, flow, cap, cost] = es[ei];
+        if (flow == cap) continue;
+        ll nv = h[i] + cost;
+        if (nv >= h[j]) continue;
+        h[j] = nv;
+        if (not inq[j]) q.emplace(j), inq[j] = 1;
+      }
+    }
+  }
+  bool dijkstra() {
+    dis.assign(n, inf);
+    struct item {
+      int i; ll v;
+      bool operator<(const item &o) const {
+        return v > o.v;
+      }
+    };
+    priority_queue<item> q;
+    q.emplace(s, 0), dis[s] = 0;
+    while (q.size()) {
+      auto [i, v] = q.top(); q.pop();
+      if (v > dis[i]) continue;
+      for (int ei: G[i]) {
+        auto &[j, flow, cap, cost] = es[ei];
+        if (flow == cap) continue;
+        ll nv = v + cost + h[i] - h[j];
+        if (nv >= dis[j]) continue;
+        dis[j] = nv;
+        q.emplace(j, nv);
+      }
+    }
+    REP(i, 0, n) h[i] += dis[i];
+    return dis[t] < inf;
+  }
+  ll dfs(int i, ll lim) {
+    if (i == t or not lim) return lim;
+    inq[i] = 1;
+    ll res = 0;
+    for (int &idx = it[i]; idx < G[i].size(); ++idx) {
+      int ei = G[i][idx];
+      auto &[j, flow, cap, cost] = es[ei];
+      if (inq[j] or h[j] != h[i] + cost) continue;
+      ll x = dfs(j, min(lim - res, cap - flow));
+      mc += x * cost;
+      res += x;
+      es[ei ^ 0].flow += x;
+      es[ei ^ 1].flow -= x;
+      if (res == lim) break;
+    }
+    inq[i] = 0;
+    return res;
+  }
+  void add(int a, int b, ll w, ll c) {
+    G[a].emplace_back(es.size()), es.emplace_back(b, 0, w, +c);
+    G[b].emplace_back(es.size()), es.emplace_back(a, 0, 0, -c);
+  }
+  void maxflow(int ss, int tt) {
+    s = ss, t = tt;
+    h.assign(n, inf);
+    spfa();
+    mc = mf = 0;
+    while (dijkstra()) {
+      it.assign(n, 0);
+      ll cur = dfs(s, inf);
+      mf += cur;
+    }
+  }
+};
+\end{minted}
+
+\section{SA}
+
+\begin{minted}{cpp}
+int sa[N], tmp[2][N], c[N], rk[N], lcp[N];
+void SA(string &s) {
+  int *x = tmp[0], *y = tmp[1], m = 256, n = s.size();
+  REP(i, 0, m) c[i] = 0;
+  REP(i, 0, n) ++c[x[i] = s[i]];
+  REP(i, 1, m) c[i] += c[i - 1];
+  for (int i = n; i--; ) sa[--c[x[i]]] = i;
+  for (int k = 1; k < n; k <<= 1) {
+    REP(i, 0, m) c[i] = 0;
+    REP(i, 0, n) ++c[x[i]];
+    REP(i, 1, m) c[i] += c[i - 1];
+    int p = 0;
+    REP(i, n - k, n) y[p++] = i;
+    REP(i, 0, n) if (sa[i] >= k) y[p++] = sa[i] - k;
+    for (int i = n; i--; ) sa[--c[x[y[i]]]] = y[i];
+    y[sa[0]] = p = 0;
+    REP(i, 1, n) {
+      int a = sa[i], b = sa[i - 1];
+      if (not (x[a] == x[b] and a + k < n and b + k < n and x[a + k] == x[b + k])) ++p;
+      y[sa[i]] = p;
+    }
+    if (n == p + 1) break;
+    swap(x, y), m = p + 1;
+  }
+}
+void LCP(string &s) {
+  // lcp[i] = LCP(sa[i - 1], sa[i])
+  // lcp(i, j) = min(lcp[rk[i]+1:rk[j]+1])
+  int n = s.size(), val = 0;
+  REP(i, 0, n) rk[sa[i]] = i;
+  REP(i, 0, n) {
+    if (not rk[i]) lca[rk[i]] = 0;
+    else {
+      if (val) --val;
+      int p = sa[rk[i] - 1];
+      while (val + i < n and val + p < n and s[val + i] == s[val + p]) ++val;
+      lcp[rk[i]] = val;
+    }
+  }
+}
+\end{minted}
+
+\section{SAM}
+
+\begin{minted}{cpp}
+const int A = 26;
+struct SAM {
+  struct node {
+    int len, link, pos; bool vis;
+    ll cnt, dp;
+    int nxt[A];
+    int& operator[](int c) {
+      return nxt[c];
+    }
+  } tr[N << 1];
+  int last, siz;
+
+  SAM() {
+    M(tr, 0);
+    tr[0] = {0, -1, -1, 0, 0};
+    last = 0, siz = 1;
+  }
+
+  void add(int c) {
+    int o = siz++;
+    tr[o].len = tr[last].len + 1;
+    tr[o].pos = tr[o].len;
+    tr[o].cnt = 1;
+    int p = last; last = o;
+    while (~p and not tr[p][c]) {
+      tr[p][c] = o;
+      p = tr[p].link;
+    }
+    if (p == -1) {
+      tr[o].link = 0;
+    } else {
+      int q = tr[p][c];
+      if (tr[p].len + 1 == tr[q].len) {
+        tr[o].link = q;
+      } else {
+        int clone = siz++;
+        tr[clone] = tr[q];
+        tr[clone].len = tr[p].len + 1;
+        tr[clone].cnt = 0;
+        tr[o].link = tr[q].link = clone;
+        while (~p and tr[p][c] == q) {
+          tr[p][c] = clone;
+          p = tr[p].link;
+        }
+      }
+    }
+  }
+
+  void dfs(int o) {
+    if (tr[o].vis) return;
+    tr[o].vis = 1;
+    int pa = tr[o].link, ch;
+    tr[o].dp = 1;
+    REP(c, 0, A) if (ch = tr[o][c]) {
+      dfs(ch);
+      tr[o].dp += tr[ch].dp;
+    }
+    if (~pa) tr[pa].cnt += tr[o].cnt;
+  }
+} sam;
+\end{minted}
+
+\section{ACAM}
+
+\begin{itemize}[nosep, after=\vspace{-8pt}]
+    \item \texttt{while True}：記得 \texttt{if not o: continue}
+\end{itemize}
+
+\begin{minted}{cpp}
+// Build Links
+// const int FAIL = A, END = A + 1;
+// int trie[N+1][A+2], q[N+1];
+for (int h = 0, t = 1; h < t; ++h) {
+  int o = q[h];
+  REP(c, 0, A) {
+    if (not trie[o][c]) continue;
+    q[t++] = trie[o][c];
+    if (not o) continue;  // vital
+    int fail = trie[o][FAIL];
+    while (not trie[fail][c]) {
+      if (not fail) break;
+      fail = trie[fail][FAIL];
+    }
+    if (trie[fail][c]) {
+      trie[trie[o][c]][FAIL] = trie[fail][c];
+      trie[trie[o][c]][END] |= tr[trie[fail][c]][END];
+    }
+  }
+}
+\end{minted}
+
+\section{Digital DP}
+
+\begin{minted}{python}
+n = ...
+num = tuple(map(int, str(n)))
+
+@cache
+def dfs(i: int = 0, data: Any = None,
+    is_lim: bool = True, start: int = -1,
+    debug: tuple[int] = ()) -> int:
+  if i == len(num): return 1
+  res = 0
+  lim = num[i] if is_lim else 9
+  for d in range(lim + 1):
+    new_data = ...(data, d)
+    new_is_lim = is_lim and d == lim
+    new_start = start + (start != -1 or d != 0)
+    new_debug = debug
+    # new_debug += (d,)  # for debugging
+    res += dfs(i + 1, new_data, new_is_lim, new_start, new_debug)
+  return res
+\end{minted}
+
+\section{數論分塊}
+
+\begin{minted}{cpp}
+// S(n) = sum(f(i) * g(n/i) for i in 1~n)
+// let s(n) = sum(f(i) for i in 1~n)
+ll s(ll x); ll g(ll x);
+ll S(ll n) {
+  ll res = 0;
+  for (ll le = 1, ri; le <= n; le = ri + 1) {
+    ri = n / (n / le);
+    res += (s(ri) - s(le - 1)) * g(n / le);
+  }
+  return res;
+}
+\end{minted}
+
+\section{乘法反元素}
+
+\begin{minted}{cpp}
+inv[1] = 1;
+REP(i, 2, lim) inv[i] = (ll)(p - p / i) * inv[p % i] % p;
+\end{minted}
+
+\section{Lucas}
+
+\begin{minted}{cpp}
+ll lucas(ll n, ll k, ll p) {
+  return (k == 0) ? 1 : 
+    C(n % p, k % p, p) * lucas(n / p, k / p, p) % p;
+}
+\end{minted}
+
+\section{質數測試}
+
+\begin{minted}{cpp}
+const int P = 12;
+ll ps[P] = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37};
+
+ll pow(ll x, ll n, ll p) {
+  ll res = 1;
+  for (; n; n >>= 1) {
+    if (n & 1) (res *= x) %= p;
+    (x *= x) %= p;
+  }
+  return res;
+}
+
+bool is_prime(ll n) {
+  ll d = n - 1, r = __builtin_ctzll(n);
+  d >>= r;
+  REP(pi, 0, P) {
+    ll a = ps[pi];
+    if (a % n == 0) continue;
+    ll x = pow(a, d, n);
+    if (x == 1 or x == n-1) continue;
+    bool p = 0;
+    while (--r) {
+      (x *= x) %= n;
+      if (x == n-1) {
+        p = 1;
+        break;
+      }
+    }
+    if (not p) return 0;
+  }
+  return 1;
+}
+\end{minted}
+
+\section{phi}
+
+\begin{minted}{cpp}
+vec<int> ps;  // ps.clear();
+bool sieve[lim];  // M(sieve, 1), 
+int phi[lim];
+
+phi[1] = 1;
+REP(i, 2, lim) {
+  if (sieve[i]) {
+    ps.emplace_back(i);
+    phi[i] = i - 1;
+  }
+  for (int p: ps) {
+    if (i * p >= lim) break;
+    sieve[i * p] = 0;
+    if (i % p == 0) {
+      phi[i * p] = phi[i] * p;
+      break;
+    }
+    phi[i * p] = phi[i] * phi[p];
+  }
+}
+\end{minted}
+
+\section{FFT}
+
+\begin{minted}{cpp}
+#include <cmath>
+#include <complex>
+using comp = complex<double>;
+const int N = 1 << 20;
+const double pi = acos(-1.0);
+int revbit[N];
+comp a[N], b[N];
+
+void fft(comp *l, int n, int inv) {
+  REP(i, 0, n) if (i < revbit[i]) swap(l[i], l[revbit[i]]);
+  for (int b = 1; b < n; b <<= 1) {
+    comp wn = polar(1.0, inv * pi / b);
+    for (int i = 0; i < n; i += b * 2) {
+      comp w = 1;
+      REP(j, i, i + b) {
+        comp x = l[j + 0], y = l[j + b] * w;
+        l[j + 0] = x + y;
+        l[j + b] = x - y;
+        w *= wn;
+      }
+    }
+  }
+  if (inv == -1) {
+    REP(i, 0, n) l[i] /= n;
+  }
+}
+
+const int lim = 1 << __lg(n * 2) + 1;
+REP(i, 1, lim) revbit[i] = revbit[i >> 1] >> 1 | (i & 1) * (lim >> 1);
+fft(l, lim, 1), fft(l, lim, -1)
+\end{minted}
+
+\section{NTT + CRT}
+
+\begin{minted}{cpp}
+using ll = long long;
+
+const int N = 1 << 20;
+const ll m1 = 469762049, m2 = 998244353, g = 3;
+int revbit[N];
+ll a1[N], a2[N], ans[N];
+
+ll pw(ll x, ll n, ll mod) {
+  ll res = 1;
+  for (x %= mod; n; n >>= 1) {
+    if (n & 1) (res *= x) %= mod;
+    (x *= x) %= mod;
+  }
+  return res;
+}
+
+void ntt(ll *l, int n, int inv, ll mod) {
+  REP(i, 0, n) if (i < revbit[i]) swap(l[i], l[revbit[i]]);
+  for (int b = 1; b < n; b <<= 1) {
+    ll wn = pw(g, (mod - 1) / (b * 2), mod);
+    if (inv == -1) wn = pw(wn, mod - 2, mod);
+    for (int i = 0; i < n; i += b * 2) {
+      ll w = 1;
+      REP(j, i, i + b) {
+        ll x = l[j + 0], y = l[j + b] * w % mod;
+        l[j + 0] = (x + y) % mod;
+        l[j + b] = (x - y + mod) % mod;
+        w = w * wn % mod;
+      }
+    }
+  }
+  if (inv == -1) {
+    ll inv_n = pw(n, mod - 2, mod);
+    REP(i, 0, n) l[i] = l[i] * inv_n % mod;
+  }
+}
+
+const int lim = 1 << __lg(n * 2) + 1;
+REP(i, 1, lim) revbit[i] = revbit[i >> 1] >> 1 | (i & 1) * (lim >> 1);
+
+ntt(a1, lim, +1, m1), ntt(a2, lim, +1, m2);
+ntt(a1, lim, -1, m1), ntt(a2, lim, -1, m2);
+
+// CRT
+ll inv_m1 = pw(m1, m2 - 2, m2);
+REP(i, 0, lim) {
+  ll k = (a2[i] - a1[i] % m2 + m2) % m2 * inv_m1 % m2;
+  ans[i] = a1[i] + k * m1;
+}
+\end{minted}
+
+\section{xor basis}
+
+\begin{minted}{cpp}
+template <typename T, int bl>
+struct xb {
+  array<T, bl> x{};
+  int siz = 0;
+  void add(T v) {
+    if (siz == bl) return;
+    for (int i = bl; i--; ) if (v >> i & 1) {
+      if (not x[i]) {
+        x[i] = v;
+        ++siz;
+        return;
+      }
+      v ^= x[i];
+    }
+  }
+  bool find(T v) {
+    for (int i = bl; i--; ) if (v >> i & 1) {
+      if (not x[i]) return 0;
+      v ^= x[i];
+    }
+    return 1;
+  }
+  T max() {
+    T v = 0;
+    for (int i = bl; i--; ) if (not (v >> i & 1)) {
+      v ^= x[i];
+    }
+    return v;
+  }
+  T kth(T k) {
+    T v = 0, cnt = (T)1 << siz;
+    for (int i = bl; i--; ) if (x[i]) {
+      cnt >>= 1;
+      if ((cnt <= k) ^ (v >> i & 1)) v ^= x[i];
+      if (cnt <= k) k -= cnt;
+    }
+    return v;
+  }
+  T rk(T v) {
+    T k = 0, cnt = (T)1 << siz;
+    for (int i = bl; i--; ) {
+      if (x[i]) cnt >>= 1;
+      if (v >> i & 1) {
+        k += cnt;
+        if (not x[i]) break;
+        v ^= x[i];
+      }
+    }
+    return k;
+  }
+};
+\end{minted}
+
+\section{Pick \& Euler}
+
+$\text{面積} = \text{內部格子點} + \dfrac{\text{邊界格子點}}{2} - 1$
+
+$V - E + F = 2$
+
+\section{Gosper Hack}
+
+\begin{minted}{cpp}
+for (int b = (1 << k) - 1, lim = 1 << n, rr; b < lim;
+  rr = b+(b&-b), b = ((rr^b) >> ctz(b)+2)|r);
+\end{minted}
+
+\section{SteinerTree}
+\begin{minted}{python}
+dp[i][s] = min(dp[i][sub] + dp[i][s ^ sub])
+dp[i][s] = min(dp[j][s] + dis[j][i])
+\end{minted}
+
+\section{定長滑窗}
+
+\begin{minted}{python}
+def slide(arr, k, func):
+  n = len(arr)
+  m = n - k + 1
+  ans = []
+  for s in range(0, m, k):
+    for i in range(s + k - 1, s, -1):
+      arr[i - 1] = func(arr[i - 1], arr[i])
+    cur = None
+    for i in range(s, min(m, s + k)):
+      if i > s: cur = func(cur, arr[i + k - 1])
+      res = func(arr[i], cur)
+      ans.append(res)
+  return ans
+\end{minted}
+
+\section{實作易錯}
+
+\begin{itemize}
+    \item 多筆測資：先將 \texttt{cin in t} 往下移一行
+    \item 多筆測資：提早 \texttt{return} 記得把 input 讀完
+    \item YES / NO 輸出注意格式
+    \item 純科技題：最好三人都看過一遍題目，確保理解完全正確
+    \item 實作易錯題目：對拍 $\le$ 20 min 則要對拍
+    \item 多細節題目：枚舉細節，排列組合亂改，說不定就 AC
+    \item 空間 $\approx 10 ^ 8$ 要好好算記憶體
+    \item \texttt{continue}、\texttt{break} 容易寫反
+    \item 掃描線：注意\textbf{同時刻}下，不同種操作的順序
+    \item 做 MST 確保邊權 \texttt{sorted}
+    \item 遇到 \textbf{rotate、陣列映射}，讀清楚變數定義
+    \item Hash WA：相信 Hash 的正確性，不要相信自己開出 C-Style Array 大小的正確性。
+    \item 對答案二分搜 $[s, t)$ 區間：\texttt{s + bisect(range(s, t), value, key=...)}，\textbf{前面的 \texttt{s +} 不要忘記}
+\end{itemize}
+
+\end{document}
