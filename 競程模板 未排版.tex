@@ -45,6 +45,16 @@
 \BeforeBeginEnvironment{minted}{\normaltextspacing}
 \AfterEndEnvironment{minted}{\resumetextspacing}
 
+\BeforeBeginEnvironment{minted}{\vspace{-0.5em}}
+\AfterEndEnvironment{minted}{\vspace{-1.8em}}
+
+% tight itemize
+\SetEnumitemKey{tight_item}{
+    nosep,
+    leftmargin=*,
+    after={\vspace{-0.8em}}
+}
+
 % 表格行距
 \renewcommand{\arraystretch}{1.5}
 
@@ -71,8 +81,13 @@
 		]}
 	{\end{tcolorbox}}
 
-% \usepackage[verbatim]{minted}  % 關掉 highlighting 快速編譯
-\usepackage{minted}
+\ifdefined\isdraft
+    \usepackage[verbatim]{minted}  % 關掉 highlighting 快速編譯
+\else
+    % \usepackage[verbatim]{minted}
+    \usepackage{minted}
+\fi
+
 \setminted{
 	fontsize=\small,
 	frame=lines,   % 加上外框
@@ -97,8 +112,7 @@
 % 使用 \makeatletter 以便存取 \@title 和 \@author 內部變數
 \makeatletter
 \lhead{\@title}
-\chead{\thepage}
-\rhead{\@author}
+\rhead{\thepage}
 \makeatother
 
 \setlength{\headsep}{12pt} % 減少頁首與內文的間隔
@@ -109,16 +123,28 @@
 \usepackage{titlesec}
 % 格式: \titleformat{命令}[型態]{格式}{標號}{標號與文字間距}{標題內容前綴}
 \titleformat{\section}
-{\normalfont\large\bfseries}   % 樣式 (這裡把 section 改小成 large)
-{\thesection}                  % 顯示章節號
-{1em}                          % 章節號和文字之間的距離
-{}                             % 標題內容的前綴 (這裡留空)
+  {\normalfont\large\bfseries}   % 樣式 (這裡把 section 改小成 large)
+  {\thesection}                  % 顯示章節號
+  {1em}                          % 章節號和文字之間的距離
+  {}                             % 標題內容的前綴 (這裡留空)
+\titleformat{\subsection}
+  {\normalfont\normalsize\bfseries}
+  {\thesection}
+  {1em}
+  {}
 
 % 格式: \titlespacing{命令}{左邊縮排}{與前段距離}{與後段距離}
 \titlespacing{\section}
-{0pt}      % 左縮排
-{6pt plus 2pt minus 2pt}    % 前段距離 (預設大約 12pt~20pt)
-{6pt plus 2pt minus 2pt}    % 後段距離 (預設大約 6pt~12pt)
+  {0pt}      % 左縮排
+  {6pt plus 2pt minus 2pt}    % 前段距離 (預設大約 12pt~20pt)
+  {3pt plus 2pt minus 2pt}    % 後段距離 (預設大約 6pt~12pt)
+\titlespacing{\subsection}
+  {0pt}
+  {6pt plus 2pt minus 2pt}
+  {3pt plus 2pt minus 2pt}
+
+\usepackage[titles]{tocloft}
+\setlength{\cftbeforesecskip}{1.2em}
 
 \usepackage{multicol}
 
@@ -134,7 +160,7 @@
 
 \newpage
 	
-\section{C++ IO template}
+\section{C++ Template}
 
 \begin{minted}{cpp}
 #include <bits/stdc++.h>
@@ -174,7 +200,7 @@ void solve() {
 }
 \end{minted}
 
-\subsection*{compile}
+\subsection*{Compile}
 
 \begin{minted}{text}
 g++ -std=c++20 -Wall -pipe -g3 -O0 test.cpp -o test
@@ -184,7 +210,14 @@ g++ -std=c++20 -Wall -pipe -O2 test.cpp -o test
 if ...; then echo "[done]"; ./test; else echo "[fail]"; fi
 \end{minted}
 
-\section{fread}
+\subsection*{Pragma}
+
+\begin{minted}{cpp}
+#pragma GCC optimize("O3,unroll-loops,no-stack-protector")
+#pragma GCC target("avx2,bmi,bmi2,lzcnt,popcnt")
+\end{minted}
+
+\subsection*{fread}
 
 \begin{minted}{cpp}
 #define gc() (p1==p2&&(p2=(p1=buf)+fread(buf,1,1<<25,stdin),p1==p2) ? EOF : *p1++)
@@ -230,6 +263,34 @@ for it in count():
     print("\n".join(ndiff(x, y)))
     break
   if it % 100 == 0: print(f"pass {it = }")
+\end{minted}
+
+\section{BIT}
+
+\begin{minted}{cpp}
+struct BIT {
+  int n;  // n != 0
+  vec<ll> bit;
+  BIT(int nn) : n(nn), bit(n + 1) {}
+  void add(int i, ll v) {  // l[i] += v
+    for (++i; i <= n; i += i & -i) bit[i] += v;
+  }
+  ll query(int s, int t) {  // sum(l[s:t])
+    ll res = 0;
+    for (; t > s; t &= t - 1) res += bit[t];
+    for (; s > t; s &= s - 1) res -= bit[s];
+    return res;
+  }
+  int kth(ll k) {  // sum(l[:i]) <= k < sum(l[:i+1])
+    int i = 0;  // 0 <= i <= n
+    for (int b = 1 << __lg(n); b; b >>= 1) {
+      if (i + b <= n and bit[i + b] <= k) {
+        k -= bit[i += b];
+      }
+    }
+    return i;
+  }
+};
 \end{minted}
 
 \section{稀疏表}
@@ -340,7 +401,7 @@ void modify(int pos, int s, int t, int qs, int qt, node o) {
 
 \section{PBDS}
 
-\begin{itemize}[nosep, after=\vspace{-8pt}]
+\begin{itemize}[tight_item]
     \item 若要 \texttt{multiset} 則用 \texttt{pair\{value, idx++\}}
 \end{itemize}
 
@@ -355,7 +416,7 @@ u.find_by_order(k)  // kth 0-based
 
 \section{FHQ-Treap}
 
-\begin{itemize}[nosep, after=\vspace{-8pt}]
+\begin{itemize}[tight_item]
     \item TLE/MLE：檢查 \texttt{node.siz}、\texttt{siz(o)}、\texttt{rng} 是否 \texttt{long long}
     \item WA：\texttt{update} 前需要 \texttt{clone}
     \item WA：如果 \texttt{merge} 前沒有 \texttt{split} 則需要 \texttt{clone}
@@ -469,7 +530,7 @@ node *meld(node *a, node *b) {
 
 \section{珂朵莉 ODT}
 
-\begin{itemize}[nosep, after=\vspace{-8pt}]
+\begin{itemize}[tight_item]
     \item 輸入空區間（$s \ge t$）會 UB，需要先判掉。
 \end{itemize}
 
@@ -589,7 +650,7 @@ node *pop(node *o) {  // persistent
 
 \section{李超樹}
 
-\begin{itemize}[nosep, after=\vspace{-8pt}]
+\begin{itemize}[tight_item]
     \item \texttt{tr[N << 2]} 記得開 $4$ 而非 $2$ 倍
     \item \texttt{update} 往下傳 \texttt{v}，而非 \texttt{u}
 \end{itemize}
@@ -631,6 +692,123 @@ ll query(int o, int s, int t, int x) {
 }
 \end{minted}
 
+\section{莫隊}
+
+\begin{itemize}[tight_item]
+    \item $B = \frac{N}{\sqrt{Q}} \Rightarrow \mathcal{O}(N \sqrt{Q})$
+\end{itemize}
+
+\subsection*{普通莫隊}
+
+\begin{minted}{cpp}
+// int B;
+struct qq {
+    int qs, qt, qi;  // [qs, qt)
+    bool operator<(const qq &o) const {
+        if (qs / B != o.qs / B) return qs < o.qs;
+        if ((qs / B) & 1) return qt < o.qt;
+        return qt > o.qt;
+    }
+} qqs[Q];
+ll ans[Q];
+// ll cur; void add(int); void sub(int);
+
+sort(qqs, qqs + q);
+int s = 0, t = 0;  // [s, t);
+for (auto [qs, qt, qi]: qqs) {
+    while (s > qs) add(--s);
+    while (t < qt) add(t++);
+    while (s < qs) sub(s++);
+    while (t > qt) sub(--t);
+    ans[qi] = cur;
+}
+\end{minted}
+
+\subsection*{回滾莫隊}
+
+\begin{minted}{cpp}
+// int B;
+struct qq {
+    int qs, qt, qi;  // [qs, qt)
+    bool operator<(const qq &o) const {
+        if (qs / B != o.qs / B) return qs < o.qs;
+        return qt < o.qt;
+    }
+} qqs[Q];
+ll ans[Q];
+// ll cur; void add(int); void undo(int);
+
+sort(qqs, qqs + q);
+int t = 0;  // [s, t);
+int pbi = -1, bt = 0;
+for (auto [qs, qt, qi]: qqs) {
+    if (int bi = qs / B; bi != pbi) {
+        while (t > bt) undo(--t);  // or clear
+        pbi = bi, bt = (bi + 1) * B;
+        t = bt;
+    }
+    while (t < qt) add(t++);
+    int qtt = min(qt, bt);
+    for (int s = qtt; s > qs; ) add(--s);
+    ans[qi] = cur;
+    for (int s = qs; s < qtt; ) undo(s++);
+}
+\end{minted}
+
+\subsection*{樹上莫隊}
+
+\begin{minted}{cpp}
+// int B;
+struct qq {
+    int qs, qt, x, qi;  // [qs, qt), x = lca
+    bool operator<(const qq &o) const {
+        if (qs / B != o.qs / B) return qs < o.qs;
+        if ((qs / B) & 1) return qt < o.qt;
+        return qt > o.qt;
+    }
+} qqs[Q];
+ll ans[Q];
+// ll cur; void add(int); void sub(int);
+
+bool vis[N];
+// M(vis, 0)
+void toggle(int i) {
+    if (vis[i] ^= 1) add(i);
+    else             sub(i);
+}
+
+int tin[N], tout[N], euler[N * 2], dfc;
+void dfs(int i, int p) {
+    euler[tin[i] = dfc++] = i;
+    for (int j: G[i]) if (j != p) dfs(j, i);
+    euler[tout[i] = dfc++] = i;
+}
+// dfc = 0; dfs(0, -1);
+
+REP(qi, 0, q) {
+    // query a, b
+    if (tin[a] > tin[b]) swap(a, b);
+    int x = lca(a, b);
+    if (x == a) {
+        qqs[qi] = {tin[a], tin[b] + 1, -1, qi};
+    } else {
+        qqs[qi] = {tout[a], tin[b] + 1, x, qi};
+    }
+}
+
+sort(qqs, qqs + q);
+int s = 0, t = 0;  // [s, t);
+for (auto [qs, qt, x, qi]: qqs) {
+    while (s > qs) toggle(euler[--s]);
+    while (t < qt) toggle(euler[t++]);
+    while (s < qs) toggle(euler[s++]);
+    while (t > qt) toggle(euler[--t]);
+    if (~x) toggle(x);
+    ans[qi] = cur;
+    if (~x) toggle(x);
+}
+\end{minted}
+
 \section{多重背包 單調隊列}
 
 \begin{minted}{cpp}
@@ -658,55 +836,66 @@ void solve() {
 \section{Johnson}
 
 \begin{minted}{cpp}
-const int N = 3e3, M = 6e3, inf = 0x3f3f3f3f;
+const ll inf = 0x3f3f3f3f'3f3f3f3f;
 
-int hd[N], to[M], nxt[M], ew[M];
-int u[N], dis[N];
-struct {
-  int i, v;
-} q[N];
-
-void solve() {
-  M(hd, -1), M(u, 0);
-  int n, m; cin in n in m;
-  REP(i, 0, m) {
-    int a, b; cin in a in b in ew[i]; --a, --b;
-    to[i] = b, nxt[i] = hd[a], hd[a] = i;
-  }
-  REP(r, 0, n) {  // Bellman-Ford
-    REP(i, 0, n) {
-      for (int ei = hd[i]; ~ei; ei = nxt[ei]) {
-        int j = to[ei], nv = u[i] + ew[ei];
-        if (nv >= u[j]) continue;
-        if (r == n-1) {
-          cout ot -1 nl;
-          return;
-        }
-        u[j] = nv;
-      }
+struct Johnson {
+  struct pr {
+    int i; ll v;
+    bool operator<(const pr &o) const {
+      return v > o.v;
     }
-  }
-  auto cmp = [&](auto &a, auto & b) {
-    return a.v > b.v;
   };
-  REP(s, 0, n) {
-    REP(i, 0, n) dis[i] = inf;
-    dis[s] = 0;
-    q[0] = {s, 0};
-    for (int h = 1; h; ) {  // Dijkstra
-      pop_heap(q, q + h, cmp);
-      auto [i, v] = q[--h];
-      if (v > dis[i]) continue;
-      for (int ei = hd[i]; ~ei; ei = nxt[ei]) {
-        int j = to[ei], nv = v + ew[ei] + u[i] - u[j];
-        if (nv >= dis[j]) continue;
-        dis[j] = nv, q[h++] = {j, nv};
-        push_heap(q, q + h, cmp);
+  int n;
+  vec<vec<pr>> G;
+  vec<ll> h;
+  vec<vec<ll>> dis;
+  Johnson(int nn) : n(nn), G(n), h(n), dis(n) {}
+  void add(int i, int j, ll w) {
+    G[i].emplace_back(j, w);
+  }
+  bool run() {
+    vec<int> cnt(n);
+    deque<int> q;
+    vec<bool> inq(n, 1);
+    REP(i, 0, n) q.emplace_back(i);
+    while (q.size()) {  // SPFA
+      int i = q.front(); q.pop_front(); inq[i] = 0;
+      ll v = h[i];
+      for (auto [j, w]: G[i]) {
+        ll nv = v + w;
+        if (nv < h[j]) {
+          h[j] = nv;
+          cnt[j] = cnt[i] + 1;
+          if (cnt[j] >= n) return 0;  // neg cyc
+          if (not inq[j]) {
+            inq[j] = 1;
+            q.emplace_back(j);
+          }
+        }
       }
     }
-    REP(i, 0, n) (dis[i] < inf ? dis[i] - u[s] + u[i] : -1)
+    priority_queue<pr> pq;
+    REP(s, 0, n) {  // Dij * n
+      auto &cur = dis[s];
+      cur.assign(n, inf);
+      cur[s] = 0;
+      pq.emplace(s, 0);
+      while (pq.size()) {
+        auto [i, v] = pq.top(); pq.pop();
+        if (v > cur[i]) continue;
+        for (auto [j, w]: G[i]) {
+          ll nv = v + w + h[i] - h[j];
+          if (nv < cur[j]) {
+            cur[j] = nv;
+            pq.emplace(j, nv);
+          }
+        }
+      }
+      REP(i, 0, n) if (cur[i] < inf) cur[i] += h[i] - h[s];
+    }
+    return 1;  // no neg cycle
   }
-}
+};
 \end{minted}
 
 \section{MP}
@@ -725,6 +914,29 @@ for (int i = 0, j = 0; i < n; ++i) {
   if (j >= m) {
     ans[a++] = i - (j - 1);
     j = lps[j - 1];
+  }
+}
+\end{minted}
+
+\section{KMP DFA}
+
+\begin{minted}{cpp}
+const int A = 26;
+array<int, A> nxt[N + 1];
+
+void build(const string &s) {
+  int n = s.size();
+  nxt[0] = {};
+  if (not n) return;
+  nxt[0][s[0] - 'a'] = 1;
+  int x = 0;
+  REP(i, 1, n + 1) {
+    nxt[i] = nxt[x];
+    if (i < n) {
+      char c = s[i] - 'a';
+      nxt[i][c] = i + 1;
+      x = nxt[x][c];
+    }
   }
 }
 \end{minted}
@@ -768,7 +980,7 @@ void pal(char s[], int z[]) {
   for (int i = 1, l = 0, r = 0; i < n; ++i) {
     if (i < r) z[i] = min(z[2 * l - i], r - i);
     while (i + 1 + z[i] < n and i - 1 - z[i] >= 0 and 
-      s[ i + 1 + z[i] ] == s[ i - 1 - z[i]]) ++z[i];
+        s[ i + 1 + z[i] ] == s[ i - 1 - z[i]]) ++z[i];
     if (i + z[i] > r) l = i, r = i + z[i];
   }
 }
@@ -787,7 +999,7 @@ void tarjan(int i) {
   for (int j: G[i]) {
     if (not instk[j] and dfn[j]) continue;
     if (not dfn[j]) tarjan(j);
-    if (low[j] < low[i]) low[i] = low[j];
+    low[i] = min(low[i], low[j]);
   }
   if (low[i] == dfn[i]) {
     for (int j = -1; j != i; ) {
@@ -812,7 +1024,7 @@ void tarjan(int i, int pa) {
     if (not dfn[j]) {
       ++ch;
       tarjan(j, i);
-      if (low[j] < low[i]) low[i] = low[j];
+      low[i] = min(low[i], low[j]);
       if (i != pa and low[j] >= dfn[i]) ans[i] = 1;
     } else if (j != pa and dfn[j] < low[i]) {
       low[i] = dfn[j];
@@ -826,16 +1038,16 @@ void tarjan(int i, int pa) {
 
 \begin{minted}{cpp}
 // int dfn[N], low[N], dfc;
-// vec<int> G[N];
+// vec<pair<int, int>> G[N];
 // bool ans[M];
 // M(dfn, 0);
 void tarjan(int i, int pa) {
   low[i] = dfn[i] = ++dfc;
-  for (int j: G[i]) {
+  for (auto [j, ei]: G[i]) {
     if (not dfn[j]) {
       tarjan(j, i);
-      if (low[j] < low[i]) low[i] = low[j];
-      if (low[j] > dfn[i]) ans[ei >> 1] = 1;
+      low[i] = min(low[i], low[j]);
+      if (low[j] > dfn[i]) ans[ei] = 1;
     } else if (j != pa and dfn[j] < low[i]) {
       low[i] = dfn[j];
     }
@@ -847,25 +1059,24 @@ void tarjan(int i, int pa) {
 
 \begin{minted}{cpp}
 // int dfn[N], low[N], stk[N], dfc;
-// vec<int> G[N];
+// vec<pair<int, int>> G[N];
 // bool instk[N], ans[N];
 // M(dfn, 0);
 void tarjan(int i, int pa) {
   dfn[i] = low[i] = ++dfc;
-  for (int j: G[i]) {
-    int j = to[ei];
+  for (auto [j, ei]: G[i]) {
     if (not dfn[j]) {
       stk[si++] = ei;
       tarjan(j, i);
-      if (low[j] < low[i]) low[i] = low[j];
+      low[i] = min(low[i], low[j]);
       if (low[j] >= dfn[i]) {
         for (int ej = -1; ej != ei; ++x) {
           ej = stk[--si];
-          bcc[ej >> 1] = ei >> 1;
+          bcc[ej] = ei;
         }
       }
     } else if (j != pa and dfn[j] < dfn[i]) {
-      if (dfn[j] < low[i]) low[i] = dfn[j];
+      low[i] = min(low[i], dfn[j]);
       stk[si++] = ei;
     }
   }
@@ -875,27 +1086,22 @@ void tarjan(int i, int pa) {
 \section{邊雙}
 
 \begin{minted}{cpp}
-// int dfn[N], low[N], scc[N], stk[N], dfc, si;
-// vec<int> G[N];
+// int dfn[N], low[N], bcc[N], stk[N], dfc, si;
+// vec<pair<int, int>> G[N];
 // bool instk[N];
 // M(dfn, 0);
 void tarjan(int i, int inin) {
   dfn[i] = low[i] = ++dfc;
   stk[si++] = i, instk[i] = 1;
-  for (int j: G[i]) {
-    if ((ei ^ inin) == 1) continue;
-    int j = to[ei];
-    if (not dfn[j]) {
-      tarjan(j, ei);
-      if (low[j] < low[i]) low[i] = low[j];
-    } else if (instk[j] and dfn[j] < low[i]) {
-      low[i] = dfn[j];
-    }
+  for (auto [j, ei]: G[i]) {
+    if (ei == inin) continue;
+    if (not instk[j] and dfn[j]) continue;
+    if (not dfn[j]) tarjan(j, ei);
+    low[i] = min(low[i], low[j]);
   }
   if (low[i] == dfn[i]) {
     for (int j = -1; j != i; ) {
-      j = stk[--si];
-      instk[j] = 0;
+      j = stk[--si], instk[j] = 0;
       bcc[j] = i;
     }
   }
@@ -932,43 +1138,82 @@ def dfs(i: int, pa: int) -> None:
     merge(ri, rp)
 \end{minted}
 
+\section{LCA}
+
+\begin{minted}{cpp}
+struct LCA {
+  int n;
+  vec<int> dep, idx, asc, hd;
+  #define lb(x) ((x) & -(x))
+  #define hb(x) ((x) ? 1 << __lg(x) : 0)
+  LCA(const auto &G, int r = 0): n(G.size()), dep(n), idx(n), asc(n), hd(n + 1) {
+    vec<pair<int, int>> qu;
+    auto dfs = [&](auto &&self, int i, int p) -> void {
+      qu.emplace_back(i, p);
+      idx[i] = qu.size();
+      for (int j: G[i]) if (j != p) {
+        dep[j] = dep[i] + 1;
+        self(self, j, i);
+        hd[idx[j]] = i;
+        if (lb(idx[i]) < lb(idx[j])) idx[i] = idx[j];
+      }
+    };
+    dfs(dfs, r, r);
+    for (auto [i, p]: qu) asc[i] = asc[p] | lb(idx[i]);
+  }
+  int operator()(int a, int b) const {
+    if (int x = idx[a] ^ idx[b]) {
+      x = asc[a] & asc[b] & -hb(x);
+      if (int y = hb(asc[a] ^ x)) y = lb(y), a = hd[(idx[a] & -y) | y];
+      if (int y = hb(asc[b] ^ x)) y = lb(y), b = hd[(idx[b] & -y) | y];
+    }
+    return dep[a] < dep[b] ? a : b;
+  }
+};
+\end{minted}
+
 \section{HLD}
 
-\begin{itemize}[nosep, after=\vspace{-8pt}]
+\begin{itemize}[tight_item]
     \item TLE：\texttt{siz[i] += siz[j]}
 \end{itemize}
 
 \begin{minted}{cpp}
-// int dfn[N], pa[N], ch[N], top[N], dep[N], siz[N], dfc;
-// vec<int> G[N];
-void dfs(int i, int p) {
-  pa[i] = p, siz[i] = 1, ch[i] = -1;
-  for (int j: G[i]) if (j != p) {
-    dep[j] = dep[i] + 1;
-    dfs(j, i);
-    siz[i] += siz[j];
-    if (ch[i] == -1 or siz[j] > siz[ch[i]]) ch[i] = j;
+struct HLD {
+  int n, dfc;
+  vec<int> pa, ch, top, dep, siz, dfn;
+  HLD(const vec<vec<int>> &G) : n(G.size()), dfc(0), pa(n), ch(n, -1), top(n), dep(n), siz(n, 1), dfn(n) {
+    auto dfs = [&](auto &&self, int i, int p) -> void {
+      pa[i] = p;
+      for (int j: G[i]) if (j != p) {
+        dep[j] = dep[i] + 1;
+        self(self, j, i);
+        siz[i] += siz[j];
+        if (ch[i] == -1 or siz[j] > siz[ch[i]]) ch[i] = j;
+      }
+    };
+    auto hld = [&](auto &&self, int i, int t) -> void {
+      top[i] = t, dfn[i] = dfc++;
+      if (~ch[i]) {
+        self(self, ch[i], t);
+        for (int j: G[i]) if (j != pa[i] and j != ch[i]) {
+          self(self, j, j);
+        }
+      }
+    };
+    dfs(dfs, 0, -1), hld(hld, 0, 0);
   }
-}
-void hld(int i, int t) {
-  top[i] = t, dfn[i] = dfc++;
-  if (~ch[i]) {
-    hld(ch[i], t);
-    for (int j: G[i]) if (j != pa[i] and j != ch[i]) {
-      hld(j, j);
+  int lca(int a, int b) {
+    while (top[a] != top[b]) {
+      if (dep[top[a]] < dep[top[b]]) swap(a, b);
+      // [top[a], a]
+      a = pa[top[a]];
     }
+    if (dep[a] < dep[b]) swap(a, b);
+    // [a, b]
+    return b;
   }
-}
-int lca(int a, int b) {
-  while (top[a] != top[b]) {
-    if (dep[top[a]] < dep[top[b]]) swap(a, b);
-    // [top[a], a]
-    a = pa[top[a]];
-  }
-  if (dep[a] < dep[b]) swap(a, b);
-  // [b, a]
-  return b;
-}
+};
 \end{minted}
 
 \section{虛樹}
@@ -992,9 +1237,51 @@ def build(kp: list[int]) -> defaultdict[list[int]]:
   return vt
 \end{minted}
 
+\section{圓方樹}
+
+\begin{minted}{cpp}
+struct RST {
+  int n, dfc, sqr;
+  vec<int> dfn, low, stk;
+  vec<bool> instk;
+  vec<vec<int>> T;
+  void link(int a, int b) {
+    T[a].emplace_back(b);
+    T[b].emplace_back(a);
+  }
+  RST(const vec<vec<int>> &G) : n(G.size()), dfc(0), sqr(n), dfn(n), low(n), stk(), instk(n), T(n << 1) {
+    auto tarjan = [&](auto &&self, int i, int p) -> void {
+      dfn[i] = low[i] = ++dfc;
+      stk.emplace_back(i);
+      for (int j: G[i]) {
+        if (not dfn[j]) {
+          self(self, j, i);
+          low[i] = min(low[i], low[j]);
+          if (low[j] >= dfn[i]) {
+            for (int x = -1; x != j; ) {
+              x = stk.back(); stk.pop_back();
+              link(x, sqr);
+            }
+            link(i, sqr);
+            ++sqr;
+          }
+        } else if (j != p and dfn[j] < dfn[i]) {
+          low[i] = min(low[i], dfn[j]);
+        }
+      }
+    };
+    REP(i, 0, n) if (not dfn[i]) {
+      tarjan(tarjan, i, -1);
+      stk.pop_back();
+    }
+    T.resize(sqr);
+  }
+};
+\end{minted}
+
 \section{Boruvka}
 
-\begin{itemize}[nosep, after=\vspace{-8pt}]
+\begin{itemize}[tight_item]
     \item 每一輪，每個\textbf{連通塊}（而非單點） 向其他連通塊\textbf{僅}嘗試\textbf{最小的一條邊}，小心不要一次更新兩邊以上。
     \item 連通塊的判斷方式，是在所有 merge 開始之前，所以要另外開一個 array 紀錄 merge 前的所屬 group，而不能使用 dsu find 動態判斷。
     \item 因為是\textbf{相異}連通塊，所以大概率跟維護\textbf{最小、次小}有關，寫法上要注意第一點的「不要一次更新了這兩邊」。
@@ -1066,7 +1353,11 @@ int kuhn(int n) {
 }
 \end{minted}
 
-\section{Dinic $O(n ^ 2 m)$}
+\section{Dinic}
+
+\begin{itemize}[tight_item]
+  \item $cap = 1 \ ? \ \mathcal{O}(m \sqrt n) : \mathcal{O}(m n ^ 2)$
+\end{itemize}
 
 \begin{minted}{cpp}
 const ll inf = 0x3f3f3f3f'3f3f3f3f;
@@ -1229,6 +1520,14 @@ struct MCMF {
 };
 \end{minted}
 
+\section{SPFA NEVER DIES}
+
+\begin{itemize}[tight_item]
+    \item \texttt{push} 時與 \texttt{q} 內平均值比較決定頭尾
+    \item \texttt{push; dis[q[0]] < dis[q[-1]] (+sqrt sum w) ? swap}
+    \item \texttt{2 <= cnt[j] <= sqrt V ? front : back}
+\end{itemize}
+
 \section{SA}
 
 \begin{minted}{cpp}
@@ -1341,7 +1640,7 @@ struct SAM {
 
 \section{ACAM}
 
-\begin{itemize}[nosep, after=\vspace{-8pt}]
+\begin{itemize}[tight_item]
     \item \texttt{while True}：記得 \texttt{if not o: continue}
 \end{itemize}
 
@@ -1370,6 +1669,10 @@ for (int h = 0, t = 1; h < t; ++h) {
 
 \section{Digital DP}
 
+\begin{itemize}[tight_item]
+    \item \texttt{is\_lim = 1} 時狀態唯一，不用 \texttt{memo}。
+\end{itemize}
+
 \begin{minted}{python}
 n = ...
 num = tuple(map(int, str(n)))
@@ -1389,6 +1692,52 @@ def dfs(i: int = 0, data: Any = None,
     # new_debug += (d,)  # for debugging
     res += dfs(i + 1, new_data, new_is_lim, new_start, new_debug)
   return res
+\end{minted}
+
+\section{擴展歐幾里得}
+
+\begin{minted}{cpp}
+// ax + by = gcd(a, b)
+ll extgcd(ll a, ll b, ll &x, ll &y) {
+  x = 1, y = 0;
+  ll xx = 0, yy = 1;
+  while (b != 0) {
+    ll q = a / b;
+    a = exchange(b, a % b);
+    x = exchange(xx, x - q * xx);
+    y = exchange(yy, y - q * yy);
+  }
+  return a;
+}
+\end{minted}
+
+\section{CRT}
+
+\begin{itemize}[tight_item]
+  \item $x = x_i \pmod {m_i}$
+\end{itemize}
+
+\begin{minted}{cpp}
+pair<ll, ll> CRT(const vec<pair<ll, ll>>& xm) {
+  int n = xm.size();
+  if (not n) return {0, 1};
+  auto mod = [](i128 a, ll b) -> ll {
+    return (a % b + b) % b;
+  };
+  ll x, m;
+  REP(i, 0, n) {
+    auto [xx, mm] = xm[i];
+    xx = mod(xx, mm);
+    if (i == 0) { x = xx, m = mm; continue; }
+    ll p, q, g = extgcd(m, mm, p, q);
+    if ((xx - x) % g) return {-1, -1};  // no sol
+    ll s = (xx - x) / g, mg = mm / g;
+    ll k = mod((i128)p * s, mg);
+    ll lcm = m * mg;
+    x = mod(x + (i128)m * k, lcm), m = lcm;
+  }
+  return {x, m};  // x, lcm(m)
+}
 \end{minted}
 
 \section{數論分塊}
@@ -1423,40 +1772,85 @@ ll lucas(ll n, ll k, ll p) {
 }
 \end{minted}
 
-\section{質數測試}
+\section{Floor Sum}
+
+\begin{itemize}[tight_item]
+  \item $\sum^{n-1}_{i=0} \lfloor \frac{a * i + b}{m} \rfloor$ in $\mathcal{O}(n + m + a + b)$
+\end{itemize}
 
 \begin{minted}{cpp}
-const int P = 12;
-ll ps[P] = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37};
+ll floor_sum(ll n, ll m, ll a, ll b) {
+  ll ans = 0;
+  if (a >= m) ans += (n - 1) * n * (a / m) / 2, a %= m;
+  if (b >= m) ans += n * (b / m), b %= m;
+  ll ymx = (a * n + b) / m, xmx = (ymx * m - b);
+  if (ymx == 0) return ans;
+  ans += (n - (xmx + a - 1) / a) * ymx;
+  ans += floor_sum(ymx, a, m, (a - xmx % a) % a);
+  return ans;
+}
+\end{minted}
 
-ll pow(ll x, ll n, ll p) {
+\section{質因數分解}
+
+\begin{minted}{cpp}
+ll mul(ll x, ll y, ll p) { return (__int128_t)x * y % p; }
+vec<ll> chk = {2,325,9375,28178,450775,9780504,1795265022};
+ll pw(ll a, ll b, ll n) {
   ll res = 1;
-  for (; n; n >>= 1) {
-    if (n & 1) (res *= x) %= p;
-    (x *= x) %= p;
+  for (; b; b >>= 1) {
+    if (b & 1) res = mul(res, a, n);
+    a = mul(a, a, n);
   }
   return res;
 }
-
-bool is_prime(ll n) {
-  ll d = n - 1, r = __builtin_ctzll(n);
-  d >>= r;
-  REP(pi, 0, P) {
-    ll a = ps[pi];
-    if (a % n == 0) continue;
-    ll x = pow(a, d, n);
-    if (x == 1 or x == n-1) continue;
-    bool p = 0;
-    while (--r) {
-      (x *= x) %= n;
-      if (x == n-1) {
-        p = 1;
+bool check(ll a, ll d, int s, ll n) {
+  a = pw(a, d, n);
+  if (a <= 1) return 1;
+  REP(i, 0, s) {
+    if (a == 1) return 0;
+    if (a == n - 1) return 1;
+    a = mul(a, a, n);
+  }
+  return 0;
+}
+bool isprime(ll n) {
+  if (n < 2) return 0;
+  if (n % 2 == 0) return n == 2;
+  ll d = n - 1, s = 0;
+  while (d % 2 == 0) d >>= 1, ++s;
+  for (ll i: chk) if (not check(i, d, s, n)) return 0;
+  return 1;
+}
+const vec<ll> smlp = {2, 3, 5, 7, 11, 13, 17, 19};
+ll findfac(ll n) {
+  if (isprime(n)) return 1;
+  for (ll p: smlp) if (n % p == 0) return p;
+  ll x, y = 2, d, t = 1;
+  for (int l = 2; ; l <<= 1) {
+    x = y;
+    int m = min(l, 32);
+    for (int i = 0; i < l; i += m) {
+      d = 1;
+      REP(j, 0, m) {
+        y = (mul(y, y, n) + t) % n;
+        d = mul(d, abs(x - y), n);
+      }
+      ll g = __gcd(d, n);
+      if (g == n) {
+        l = 1, y = 2, ++t;
         break;
       }
+      if (g != 1) return g;
     }
-    if (not p) return 0;
   }
-  return 1;
+}
+map<ll, int> res;
+void rec(ll n) {  // PollardRho
+  if (n == 1) return;
+  if (isprime(n)) { ++res[n]; return; }
+  ll d = findfac(n);
+  rec(n / d), rec(d);
 }
 \end{minted}
 
@@ -1482,6 +1876,80 @@ REP(i, 2, lim) {
     }
     phi[i * p] = phi[i] * phi[p];
   }
+}
+\end{minted}
+
+\section{Cipolla}
+
+\begin{itemize}[tight_item]
+  \item $x ^ 2 = n \pmod p$
+\end{itemize}
+
+\begin{minted}{cpp}
+using i128 = __int128_t;
+using pr = pair<ll, ll>;
+ll pw(ll aa, ll b, ll mod) {
+  ll res = 1;
+  i128 a = aa;
+  for (a %= mod; b; b >>= 1) {
+    if (b & 1) res = res * a % mod;
+    a = a * a % mod;
+  }
+  return res;
+}
+pr cipolla(ll n, ll p) {
+  n = (n % p + p) % p;
+  if (n == 0) return {0, 0};
+  if (p == 2) return {n, n};
+  if (pw(n, p-1 >> 1, p) != 1) return {-1, -1};  // no sol
+  static mt19937_64 rng(1145141919810);
+  ll a = 0, w = 0;
+  do {
+    a = rng() % p;
+    w = ((i128)a * a - n) % p;
+    if (w < 0) w += p;
+  } while (pw(w, p-1 >> 1, p) != p - 1);
+  auto mul = [&](pr x, pr y) {
+    auto [a, b] = x; auto [c, d] = y;
+    ll r = ((i128)a * c + (i128)b * d % p * w) % p;
+    ll i = ((i128)a * d + (i128)b * c) % p;
+    return pr{r, i};
+  };
+  pr res = {1, 0};
+  pr b = {a, 1};
+  for (ll x = p / 2 + 1; x; x >>= 1) {
+    if (x & 1) res = mul(res, b);
+    b = mul(b, b);
+  }
+  ll x0 = res.first, x1 = (p - x0) % p;
+  if (x0 > x1) swap(x0, x1);
+  return {x0, x1};
+}
+\end{minted}
+
+\section{Discrete Log}
+
+\begin{itemize}[tight_item]
+  \item $a ^ x = b \pmod m$
+\end{itemize}
+
+\begin{minted}{cpp}
+ll DiscreteLog(ll a, ll b, ll m) {
+  ll k = 1 % m, ans = 0, g;
+  while ((g = gcd(a, m)) > 1) {
+    if (b == k) return ans;
+    if (b % g) return -1;
+    b /= g, m /= g, ans++, k = (k * a / g) % m;
+  }
+  if (b == k) return ans;
+  const int B = max(1, (int)ceil(sqrt(m)));
+  unordered_map<ll, int> vis;
+  ll t = 1;
+  REP(i, 0, B) vis[t * b % m] = i, t = t * a % m;
+  ll cur = k * t % m;
+  for (int i = 1; i <= B; ++i, cur = cur * t % m)
+    if (vis.count(cur)) return i * B - vis[cur] + ans;
+  return -1;
 }
 \end{minted}
 
@@ -1640,7 +2108,7 @@ $V - E + F = 2$
 
 \begin{minted}{cpp}
 for (int b = (1 << k) - 1, lim = 1 << n, rr; b < lim;
-  rr = b+(b&-b), b = ((rr^b) >> ctz(b)+2)|r);
+  rr = b+(b&-b), b = ((rr^b) >> ctz(b)+2)|rr);
 \end{minted}
 
 \section{SteinerTree}
@@ -1669,20 +2137,32 @@ def slide(arr, k, func):
 
 \section{實作易錯}
 
-\begin{itemize}
-    \item 多筆測資：先將 \texttt{cin in t} 往下移一行
-    \item 多筆測資：提早 \texttt{return} 記得把 input 讀完
-    \item YES / NO 輸出注意格式
-    \item 純科技題：最好三人都看過一遍題目，確保理解完全正確
-    \item 實作易錯題目：對拍 $\le$ 20 min 則要對拍
-    \item 多細節題目：枚舉細節，排列組合亂改，說不定就 AC
-    \item 空間 $\approx 10 ^ 8$ 要好好算記憶體
-    \item \texttt{continue}、\texttt{break} 容易寫反
-    \item 掃描線：注意\textbf{同時刻}下，不同種操作的順序
-    \item 做 MST 確保邊權 \texttt{sorted}
-    \item 遇到 \textbf{rotate、陣列映射}，讀清楚變數定義
-    \item Hash WA：相信 Hash 的正確性，不要相信自己開出 C-Style Array 大小的正確性。
-    \item 對答案二分搜 $[s, t)$ 區間：\texttt{s + bisect(range(s, t), value, key=...)}，\textbf{前面的 \texttt{s +} 不要忘記}
+\begin{itemize}[itemsep=0.1em, leftmargin=*]
+  \item 多筆測資：先將 \texttt{cin in t} 往下移一行
+  \item 多筆測資：提早 \texttt{return} 記得把 input 讀完
+  \item 範測沒的特判要手驗、特判記得 \texttt{return}
+  \item 範測 WA，確認沒有複製錯。
+  \item 輸出任意解：輸出前寫個 checker。
+  \item YES / NO 輸出注意格式
+  \item 純科技題：最好三人都看過一遍題目，確保理解完全正確
+  \item 實作易錯題目：對拍 $\le$ 20 min 則要對拍
+  \item 多細節題目：枚舉細節，排列組合亂改，說不定就 AC
+  \item 空間 $\approx 10 ^ 8$ 要好好算記憶體
+  \item \texttt{continue}、\texttt{break} 容易寫反
+  \item 掃描線：注意\textbf{同時刻}下，不同種操作的順序
+  \item 做 MST 確保邊權 \texttt{sorted}
+  \item 遇到 \textbf{rotate、陣列映射}，讀清楚變數定義
+  \item Hash WA：相信 Hash 的正確性，不要相信自己開出 C-Style Array 大小的正確性
+  \item 對答案二分搜 $[s, t)$ 區間：\texttt{s + bisect(range(s, t), value, key=...)}，\textbf{前面的 \texttt{s +} 不要忘記}
+  \item 求 MEX 先把 $\le n$ 都特判掉
+  \item 離散化：
+  \begin{itemize}[itemsep=0.1em, leftmargin=*]
+    \item 去重？中間被刪掉的空格意義？
+    \item \textbf{每個點代表的區間意義！}
+    \item 離散化後答案不變，先 \texttt{x = mp(x)} 預處理。
+    \item 考慮新增 $\infty$ 作為 sentinel，一個不夠就兩個。
+    \item \textbf{戳沒被離散化到的點}，需要考慮戳進\textbf{單位格子}的情況，此時就不用再枚舉前一點。
+  \end{itemize}
 \end{itemize}
 
 \end{document}
