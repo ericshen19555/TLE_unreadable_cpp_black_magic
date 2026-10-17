@@ -46,7 +46,7 @@
 \AfterEndEnvironment{minted}{\resumetextspacing}
 
 \BeforeBeginEnvironment{minted}{\vspace{-0.5em}}
-\AfterEndEnvironment{minted}{\vspace{-1.8em}}
+\AfterEndEnvironment{minted}{\vspace{-0.8em}}
 
 % tight itemize
 \SetEnumitemKey{tight_item}{
@@ -84,8 +84,8 @@
 \ifdefined\isdraft
     \usepackage[verbatim]{minted}  % 關掉 highlighting 快速編譯
 \else
-    \usepackage[verbatim]{minted}
-    % \usepackage{minted}
+    % \usepackage[verbatim]{minted}
+    \usepackage{minted}
 \fi
 
 \setminted{
@@ -136,7 +136,7 @@
 % 格式: \titlespacing{命令}{左邊縮排}{與前段距離}{與後段距離}
 \titlespacing{\section}
   {0pt}      % 左縮排
-  {6pt plus 2pt minus 2pt}    % 前段距離 (預設大約 12pt~20pt)
+  {3pt plus 2pt minus 2pt}    % 前段距離 (預設大約 12pt~20pt)
   {3pt plus 2pt minus 2pt}    % 後段距離 (預設大約 6pt~12pt)
 \titlespacing{\subsection}
   {0pt}
@@ -597,6 +597,8 @@ void modify(int o, int s, int t, int qs, int qt, line v) {
   modify(o << 1 | 0, s, mid, qs, qt, v);
   modify(o << 1 | 1, mid, t, qs, qt, v);
 }
+
+
 
 ll query(int o, int s, int t, int x) {
   ll res = tr[o].y(x);
@@ -1120,6 +1122,8 @@ struct HLD {
     };
     dfs(dfs, 0, -1), hld(hld, 0, 0);
   }
+
+
   int lca(int a, int b) {
     while (top[a] != top[b]) {
       if (dep[top[a]] < dep[top[b]]) swap(a, b);
@@ -2100,6 +2104,20 @@ def slide(arr, k, func):
     \item 考慮新增 $\infty$ 作為 sentinel，一個不夠就兩個。
     \item \textbf{戳沒被離散化到的點}，需要考慮戳進\textbf{單位格子}的情況，此時就不用再枚舉前一點。
   \end{itemize}
+\end{itemize}
+
+\section{Keymap}
+
+\begin{minted}{bash}
+gsettings set org.gnome.desktop.wm.keybindings
+  switch-to-workspace-{up/down} []
+  move-to-workspace-{up/down} []
+\end{minted}
+
+\begin{itemize}[tight_item]
+  \item vscode keymap settings - \texttt{Ctrl K  Ctrl S}
+  \item add cursor above/below - \texttt{Ctrl Alt Up/Down}
+  \item copy line up/down - \texttt{Shift Alt Up/Down}
 \end{itemize}
 
 \end{document}
